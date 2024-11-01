@@ -1,8 +1,22 @@
+import {
+  SELF_ATTESTATION_SCHEMA_UID,
+  THIRD_PARTY_ATTESTATION_SCHEMA_UID,
+} from "@/hooks/useAttestationCreation";
 import { gql } from "urql";
 
 export const ATTESTATIONS_FOR_SPECIFIC_ATTESTER = gql`
   query AttestationsForSpecificAttester($attester: String!) {
-    attestations(where: { attester: { equals: $attester } }) {
+    attestations(
+      where: {
+        attester: { equals: $attester }
+        schemaId: {
+          in: [
+            "${THIRD_PARTY_ATTESTATION_SCHEMA_UID}"
+            "${SELF_ATTESTATION_SCHEMA_UID}"
+          ]
+        }
+      }
+    ) {
       id
       attester
       recipient
@@ -21,9 +35,14 @@ export const ATTESTATIONS_FOR_SPECIFIC_KEY = gql`
   query ($publicKeyOrFingerprintOrUid: String!) {
     selfAttestations: attestations(
       where: {
-        OR: [
-          { id: { equals: $publicKeyOrFingerprintOrUid } }
-          { decodedDataJson: { contains: $publicKeyOrFingerprintOrUid } }
+        AND: [
+          { schemaId: { equals: "${SELF_ATTESTATION_SCHEMA_UID}" } }
+          {
+            OR: [
+              { id: { equals: $publicKeyOrFingerprintOrUid } }
+              { decodedDataJson: { contains: $publicKeyOrFingerprintOrUid } }
+            ]
+          }
         ]
       }
     ) {
@@ -35,9 +54,14 @@ export const ATTESTATIONS_FOR_SPECIFIC_KEY = gql`
     }
     thirdPartyAttestations: attestations(
       where: {
-        OR: [
-          { id: { equals: $publicKeyOrFingerprintOrUid } }
-          { decodedDataJson: { contains: $publicKeyOrFingerprintOrUid } }
+        AND: [
+          { schemaId: { equals: "${THIRD_PARTY_ATTESTATION_SCHEMA_UID}" } }
+          {
+            OR: [
+              { id: { equals: $publicKeyOrFingerprintOrUid } }
+              { decodedDataJson: { contains: $publicKeyOrFingerprintOrUid } }
+            ]
+          }
         ]
       }
       orderBy: { timeCreated: desc }

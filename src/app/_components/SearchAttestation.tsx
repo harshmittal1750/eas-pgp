@@ -81,13 +81,14 @@ const SearchAttestation: React.FC = () => {
   };
 
   return (
-    <div className="w-full p-4">
+    <div className="w-full ">
+      <h1 className="text-2xl p-4 font-bold">Search Attestation</h1>
       <Input
         type="text"
         value={searchKey}
         onChange={handleInputChange}
         placeholder="Enter attestation UID or fingerprint"
-        className="w-full p-2 mb-4 border rounded-md"
+        className="w-full p-8 mb-4 border rounded-md"
       />
       {loading && <p>Loading...</p>}
       {error && <p className="text-red-500">{error.message}</p>}

@@ -16,8 +16,13 @@ import { useCallback, useMemo } from "react";
 import { formatTime } from "@/lib/formatTime";
 import { useRouter } from "next/navigation";
 import { trimAddress } from "@/lib/trimAddress";
+import { useSigner } from "@/hooks/useSigner";
 const ManageAttestation: NextPage = () => {
   const { attestations, loading, error } = useGetAttestations();
+  const signer = useSigner();
+  const userWalletAddress = useMemo(() => {
+    return signer?.getAddress();
+  }, [signer]);
 
   const router = useRouter();
   const handleNavigateById = useCallback(
@@ -101,14 +106,23 @@ const ManageAttestation: NextPage = () => {
   if (error) {
     return <p>{error.message}</p>;
   }
+  if (!userWalletAddress) {
+    return (
+      <div className=" h-full w-full">
+        <div className="flex items-center justify-normal">
+          <p> Please connect your wallet to view attestations</p>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div>
       <Table>
         <TableCaption>
-          {attestations
-            ? "A list of your attestations"
-            : "Please connect wallet"}
+          {attestations && attestations.length === 0
+            ? "No attestations found"
+            : "Manage Attestations"}
         </TableCaption>
         <TableHeader>{renderTableHeader()}</TableHeader>
         <TableBody>{renderTableRows()}</TableBody>

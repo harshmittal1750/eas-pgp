@@ -12,10 +12,8 @@ import Link from "next/link";
 
 function Navbar() {
   const navItems = [
-    { label: "History", href: "/history" },
     { label: "PGP Score", href: "/pgp-score" },
     { label: "Manage", href: "/manage" },
-    { label: "Search", href: "/search" },
   ];
 
   return (

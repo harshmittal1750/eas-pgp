@@ -22,6 +22,7 @@ const App: React.FC = () => {
   return (
     // <Layout>
     <div className="space-y-8">
+      <SearchAttestation />
       <Card>
         <CardHeader>
           <CardTitle>PGP Attestation Schemas</CardTitle>

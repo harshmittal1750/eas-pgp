@@ -12,6 +12,7 @@ import { Alert, AlertDescription, AlertTitle } from "@/components/ui/alert";
 import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { getKeyFingerprint } from "@/lib/getKeyFingerprint";
 import { Separator } from "@/components/ui/separator";
+import { THIRD_PARTY_ATTESTATION_SCHEMA_UID } from "@/hooks/useAttestationCreation";
 
 type InputType = "publicKey" | "fingerprint";
 
@@ -86,9 +87,7 @@ export const PGPKeyForm: React.FC = () => {
       <div>
         <div className="description-text">
           <div>Third party Attestation Schema</div>
-          <div>
-            UID:0xa2bcb9b27c17c609a12e38f848118af93fcd7d6ea6f6f7d4cb234ce33e568c63
-          </div>
+          <div>UID:{THIRD_PARTY_ATTESTATION_SCHEMA_UID}</div>
         </div>
       </div>
       <Separator />
